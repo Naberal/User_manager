@@ -8,6 +8,11 @@ doctrine:
 
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+        types:
+            user_id: App\User\Infrastructure\DB\DoctrineTypes\UserIdType
+            login: App\User\Infrastructure\DB\DoctrineTypes\LoginType
+            password: App\User\Infrastructure\DB\DoctrineTypes\PasswordType
+            phone: App\User\Infrastructure\DB\DoctrineTypes\PhoneType
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
