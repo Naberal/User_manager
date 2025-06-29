@@ -47,11 +47,19 @@ class UserManager implements UserUpdater, UserRemover, UserCreator
         if ($user === null) {
             return;
         }
-        $this->validateUserCredentials($newLogin, $newPassword);
-        $user->changeLogin($newLogin);
-        $user->changePassword($newPassword);
-        $user->changePhone($newPhone);
-        $this->repository->update($user);
+        $isCredentialsChanged = $user->getLogin() != $newLogin || $user->getPassword() != $newPassword;
+        $isPhoneChanged = $user->getPhone() != $newPhone;
+        if ($isCredentialsChanged) {
+            $this->validateUserCredentials($newLogin, $newPassword);
+            $user->changeLogin($newLogin);
+            $user->changePassword($newPassword);
+        }
+        if ($isPhoneChanged) {
+            $user->changePhone($newPhone);
+        }
+        if ($isCredentialsChanged || $isPhoneChanged) {
+            $this->repository->update($user);
+        }
     }
 
     /**
